@@ -1,0 +1,90 @@
+version: '3.9'
+services:
+  db:
+    image: postgres
+    ports:
+    - "5432:5432"
+    build: {
+      context: /db,
+      dockerfile: dockerfile
+    }
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - net
+    environment:
+      - POSTGRES_DB=twitter
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    container_name: db
+  nginx:
+    build: nginx/.
+    ports:
+      - "80:80"
+    depends_on:
+      - server1
+      - server2
+    links:
+      - server1
+      - server2
+    networks:
+      - net
+  redis:
+    image: redis
+    networks:
+      - net
+  server1:
+    image: server
+    build: {
+      context: /twitter-back,
+      dockerfile: dockerfile
+    }
+    networks:
+      - net
+    depends_on:
+      - db
+    environment:
+      - dbName=twitter
+      - dbUser=postgres
+      - dbPass=postgres
+      - dbPort=5432
+      - dbHost=db
+      - name=server1
+    container_name: server1
+  server2:
+    image: server
+    build: {
+      context: /twitter-back,
+      dockerfile: dockerfile
+    }
+    networks:
+      - net
+    depends_on:
+      - db
+    environment:
+      - dbName=twitter
+        - dbUser=postgres
+        - dbPass=postgres
+        - dbPort=5432
+        - dbHost=db
+        - name=server2
+    container_name: server2
+  front:
+    ports:
+      - "4000:4000"
+    build: {
+      context: /twitter-front,
+      dockerfile: dockerfile
+    }
+    networks:
+      - net
+    environment:
+      - WEB_BASE_URL=nginx:80
+    container_name: front
+
+networks:
+  net:
+    driver: bridge
+volumes:
+  dbdata:
