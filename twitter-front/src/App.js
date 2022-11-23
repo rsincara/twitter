@@ -8,6 +8,7 @@ import CreateTwit from "./pages/createTwit";
 import MyTwits from "./pages/myTwits";
 
 function App() {
+    console.log('port, host', )
   return (
       <>
           <Routes>

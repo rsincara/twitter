@@ -72,7 +72,7 @@ services:
     container_name: server2
   front:
     ports:
-      - "4000:4000"
+      - "3000:3000"
     build: {
       context: /twitter-front,
       dockerfile: dockerfile
@@ -80,7 +80,7 @@ services:
     networks:
       - net
     environment:
-      - WEB_BASE_URL=nginx:80
+      - REACT_APP_WEB_BASE_URL=nginx:80
     container_name: front
 
 networks:

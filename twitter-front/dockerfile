@@ -1,19 +1,22 @@
-# get the base node image
-FROM node:alpine as builder
+# front
 
-# set the working dir for container
-WORKDIR /frontend
+# Шаг 1. Скачиваем и устанавливаем NodeJS.
+FROM node:alpine
 
-# copy the json file first
-COPY ./package.json /frontend
+# Шаг 2.
+LABEL maintainer="2262288@gmail.com"
 
-# install npm dependencies
+# Шаг 3. Задаём директорию, в которой будет лежать наше приложение в виртуальном Линуксе.
+WORKDIR /usr/app/front
+
+# Шаг 4. Открываем для контейнера порт 3000
+EXPOSE 3000
+
+# Шаг 5. Копируем данные из образа в рабочую папку.
+COPY ./ ./
+
+# Щаг 6. Запускаем менеджер пакетов NodeJS.
 RUN npm install
 
-# copy other project files
-COPY . .
-
-# build the folder
-CMD [ "npm", "run", "start" ]
-
-expose 4000
+# Шаг 7. Запускаем приложение.
+CMD ["npm", "start"]

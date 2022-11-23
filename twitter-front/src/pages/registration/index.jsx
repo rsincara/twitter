@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import MainLayout from "../../UI/Layouts/MainLayout";
 
 import * as SC from './styles';
+import { fetchApi } from "../../services/Fetch";
+import { useNavigate } from "react-router-dom";
 
 const Registration = () => {
 
@@ -14,6 +16,8 @@ const Registration = () => {
 
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
+    const navigate = useNavigate();
+
     const handleInputChange = (e, name) => {
         setRegistration({
             ...registration,
@@ -22,15 +26,16 @@ const Registration = () => {
     };
 
     const handleSubmitButtonClick = () => {
-        fetch('http://localhost:3000/users/register', {
+
+        fetchApi('users/register', {
             method: 'POST',
-            body: JSON.stringify(registration),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then((res) => res.json().then((res) => {
+            body: {
+                registration,
+            },
+        }).then((res) => {
             setResponseResult(res.message);
-        }));
+            navigate('/');
+        });
     }
 
     return (
