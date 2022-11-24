@@ -30,7 +30,7 @@ const Registration = () => {
         fetchApi('users/register', {
             method: 'POST',
             body: {
-                registration,
+                ...registration,
             },
         }).then((res) => {
             setResponseResult(res.message);

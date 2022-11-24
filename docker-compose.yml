@@ -63,7 +63,7 @@ services:
     depends_on:
       - db
     environment:
-      - dbName=twitter
+        - dbName=twitter
         - dbUser=postgres
         - dbPass=postgres
         - dbPort=5432
@@ -80,7 +80,7 @@ services:
     networks:
       - net
     environment:
-      - REACT_APP_WEB_BASE_URL=nginx:80
+      - REACT_APP_WEB_BASE_URL=http://localhost:80
     container_name: front
 
 networks:
