@@ -27,7 +27,8 @@ const CreateTwit = () => {
         }).then((res) => {
             console.log(res)
             setResponseResult(res.message);
-            navigate('/');
+            alert('Posted!')
+            setTwit('')
         });
     }
 

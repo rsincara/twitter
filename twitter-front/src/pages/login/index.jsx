@@ -5,6 +5,7 @@ import * as SC from './styles';
 import {setToken} from "../../services/LocalStorage";
 import {fetchApi} from "../../services/Fetch";
 import {useNavigate} from "react-router-dom";
+import browserHistory from "../../services/BrowserHistory";
 
 const Login = () => {
     const [registration, setRegistration] = useState({
@@ -33,7 +34,7 @@ const Login = () => {
             console.log(res)
             setToken(res.token);
             setResponseResult(res.message);
-            navigate('/');
+            window.location.pathname = '/';
         });
     }
 

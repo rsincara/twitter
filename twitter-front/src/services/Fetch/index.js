@@ -1,4 +1,5 @@
-import {getToken} from "../LocalStorage";
+import { getToken } from "../LocalStorage";
+import browserHistory from "../BrowserHistory";
 
 const SERVER_ADDRESS = process.env.REACT_APP_WEB_BASE_URL || 'http://localhost:4000';
 
@@ -17,8 +18,7 @@ export const fetchApi = (endpoint, {body, method, ...options} = {}) => {
         },
     }).then((res) => {
         if (res.status === 401) {
-            // todo на browserHistory
-            window.location.pathname = 'login';
+            browserHistory.push('/login')
         }
 
         if (res.status === 200) {

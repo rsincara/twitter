@@ -7,9 +7,9 @@ const {authMiddleware} = require("../middlewares/auth");
 
 // todo тут будет формироваться лента
 router.get('/', authMiddleware, function(req, res, next) {
-    db('users').then((users) => {
+    db('twits').then((twits) => {
         res.json({
-            users,
+            twits,
             status: 200,
         })
     })
