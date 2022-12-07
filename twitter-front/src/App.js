@@ -11,6 +11,7 @@ import {useDispatch, useSelector} from "react-redux";
 import { selectUserBranch } from "./redux/user/selectors";
 import {getUserInfo} from "./redux/user";
 import Twits from "./pages/twits";
+import Loader from './UI/Loader/Loader';
 
 function App() {
     const dispatch = useDispatch();
@@ -25,9 +26,7 @@ function App() {
 
     if (isLoading) {
         return (
-            <div>
-                Loader...
-            </div>
+            <Loader/>
         )
     }
 

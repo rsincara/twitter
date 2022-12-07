@@ -1,0 +1,30 @@
+<svg width='500' height='500' xmlns="http://www.w3.org/2000/svg">
+
+    <style>
+        #line1 {
+            animation: rotate 2s infinite linear;
+        }
+        #line2 {
+            animation: rotate 1.5s infinite linear;
+        }
+        #line3 {
+            animation: rotate 1s infinite linear;
+        }
+        .line {
+            transform-origin: 30% 30%;
+        }
+        @keyframes rotate {
+            from {
+                transform: rotate(360deg);
+            }
+            to {
+                transform: rotate(0deg);
+            }
+        }
+    </style>
+
+    <path id="line1" class="line" d="m225 80 s 60 60 0 140" stroke="darkblue" stroke-width="5" fill="transparent"/>
+    <path id="line2" class="line" d="m233 100 s 31 45 -1 100" stroke="blue" stroke-width="5" fill="transparent"/>
+    <path id="line3" class="line" d="m236 120 s 15 30 0 60" stroke="cyan" stroke-width="5" fill="transparent"/>
+
+</svg>
