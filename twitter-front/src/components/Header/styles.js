@@ -26,3 +26,9 @@ export const Logo = styled(NavLink)`
   color: inherit;
 `;
 
+export const NavItem = styled(NavLink)`
+    color: inherit;
+    margin: 1em;
+    font-size: 24px;
+    text-decoration: none;
+`
