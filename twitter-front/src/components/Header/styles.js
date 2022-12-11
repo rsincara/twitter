@@ -29,6 +29,6 @@ export const Logo = styled(NavLink)`
 export const NavItem = styled(NavLink)`
     color: inherit;
     margin: 1em;
-    font-size: 24px;
+    font-size: 20px;
     text-decoration: none;
 `
