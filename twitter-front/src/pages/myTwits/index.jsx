@@ -5,6 +5,7 @@ import * as SC from './styles';
 import {setToken} from "../../services/LocalStorage";
 import {fetchApi} from "../../services/Fetch";
 import {useNavigate} from "react-router-dom";
+import Loader from "../../UI/Loader/Loader";
 
 const MyTwits = () => {
     const [twits, setTwits] = useState(null);
@@ -23,7 +24,7 @@ const MyTwits = () => {
             </SC.Title>
 
             {!twits && (
-                <p>Loading...</p>
+                <Loader />
             )}
             {twits && twits.map((twit) => (
                 <SC.Twit key={twit.id}>

@@ -4,6 +4,7 @@ import MainLayout from "../../UI/Layouts/MainLayout";
 import * as SC from './styles';
 import { fetchApi } from "../../services/Fetch";
 import Twit from "../../components/Twit";
+import Loader from "../../UI/Loader/Loader";
 
 const MyTwits = () => {
     const [twits, setTwits] = useState(null);
@@ -22,7 +23,7 @@ const MyTwits = () => {
             </SC.Title>
 
             {!twits && (
-                <p>Loading...</p>
+                <Loader />
             )}
             {twits && twits.map((twit) => (
                 <Twit key={twit.id} twit={twit} />
