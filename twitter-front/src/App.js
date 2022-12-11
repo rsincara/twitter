@@ -1,16 +1,16 @@
 import './App.css';
-import Header from "./components/Header";
 import {Route, Routes} from "react-router-dom"
 import Login from "./pages/login";
 import Registration from "./pages/registration";
 import Index from "./pages/index";
 import CreateTwit from "./pages/createTwit";
 import MyTwits from "./pages/myTwits";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import { selectUserBranch } from "./redux/user/selectors";
 import {getUserInfo} from "./redux/user";
 import Twits from "./pages/twits";
+import Loader from './UI/Loader/Loader';
 
 function App() {
     const dispatch = useDispatch();
@@ -21,13 +21,9 @@ function App() {
         dispatch(getUserInfo());
     }, []);
 
-    console.log('isLoading: ', isLoading)
-
     if (isLoading) {
         return (
-            <div>
-                Loader...
-            </div>
+            <Loader/>
         )
     }
 
