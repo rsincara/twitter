@@ -3,12 +3,16 @@ import React from 'react';
 import * as SC from './styles';
 
 const Twit = ({
-    twit
+    twit,
+    onAuthorClick
 }) => {
     return (
         <SC.Twit>
             <SC.Top>
-                <SC.Author>
+                <SC.Author
+                    isSubscribed={twit.isSubscribed}
+                    onClick={() => onAuthorClick(twit)}
+                >
                     {twit.author}
                 </SC.Author>
                 <SC.Date>

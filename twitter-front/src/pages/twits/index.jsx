@@ -16,6 +16,21 @@ const MyTwits = () => {
         });
     }, []);
 
+    const handleAuthorClick = (twit) => {
+        fetchApi(twit.isSubscribed ? 'users/unsubscribe' : 'users/subscribe', {
+            method: 'POST',
+            body: {
+                id: twit.author_id,
+            }
+        }).then(() => {
+            setTwits(null);
+            fetchApi('twits').then((res) => {
+                console.log('res', res);
+                setTwits(res.twits)
+            });
+        })
+    }
+
     return (
         <MainLayout>
             <SC.Title>
@@ -26,7 +41,11 @@ const MyTwits = () => {
                 <Loader />
             )}
             {twits && twits.map((twit) => (
-                <Twit key={twit.id} twit={twit} />
+                <Twit
+                    key={twit.id}
+                    twit={twit}
+                    onAuthorClick={handleAuthorClick}
+                />
             ))}
         </MainLayout>
     );

@@ -20,6 +20,14 @@ export const Top = styled.div`
 export const Author = styled.div`
   font-size: 24px;
   font-weight: 600;
+  
+  cursor: pointer;
+  
+  :hover {
+    color: ${({ isSubscribed }) => isSubscribed ? 'red' : 'blue' };
+  }
+  
+  color: ${({ isSubscribed }) => isSubscribed ? 'green' : '#000000'}
 `;
 
 export const Date = styled.div`

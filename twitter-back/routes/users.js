@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const db = require('../db/index');
 const { v4: uuidv4 } = require('uuid');
-const { isValidPassword } = require("../helpers/auth");
+const { isValidPassword, getUserByToken} = require("../helpers/auth");
 const {authMiddleware} = require("../middlewares/auth");
 
 router.get('/', authMiddleware, function(req, res, next) {
@@ -93,6 +93,70 @@ router.post('/login', (req, res) => {
       })
     }
   })
-})
+});
+
+router.post('/subscribe', authMiddleware, function (req, res, next) {
+  getUserByToken(req.headers.authorization || '').then((user) => {
+    if (user) {
+        const { id } = req.body;
+        db('users_subs').where({
+          'user_author_id': id
+        }).then((userSubsRes) => {
+          const isUserSubscribed = userSubsRes.some(x => x.user_sub_id === user.id);
+          const isUserSelfSubscribe = id === user.id;
+          if (!isUserSubscribed && !isUserSelfSubscribe) {
+            db('users_subs').insert({
+              'user_sub_id': user.id,
+              'user_author_id': id,
+            }).then(() => {
+              res.json({
+                message: "Subscribed",
+                status: 200,
+              })
+            })
+         } else if (isUserSelfSubscribe) {
+            res.status(422).json({
+              message: "You can not subscribe on yourself",
+              status: 422,
+            })
+          } else {
+            res.status(422).json({
+              message: "You already subscribed",
+              status: 422,
+            })
+          }
+        })
+    }
+  })
+});
+
+router.post('/unsubscribe', authMiddleware, function (req, res, next) {
+  getUserByToken(req.headers.authorization || '').then((user) => {
+    if (user) {
+      const { id } = req.body;
+      db('users_subs').where({
+        'user_author_id': id
+      }).then((userSubsRes) => {
+        const isUserSubscribed = userSubsRes.some(x => x.user_sub_id === user.id);
+        if (isUserSubscribed) {
+          db('users_subs').where({
+            'user_sub_id': user.id,
+            'user_author_id': id,
+          }).del().then(() => {
+            res.json({
+              message: "Unsubscribed",
+              status: 200,
+            })
+          })
+        } else {
+          res.status(422).json({
+            message: "You are not subscribed on this user",
+            status: 422,
+          })
+        }
+      })
+    }
+  })
+});
 
 module.exports = router;
