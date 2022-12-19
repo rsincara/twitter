@@ -1,0 +1,16 @@
+{
+  "name": "loader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "loader.js",
+  "scripts": {
+    "start": "node loader.js"
+  },
+  "dependencies": {
+    "redis": "^4.4.0",
+    "amqplib": "^0.10.3",
+    "node-fetch": "^2.6.7"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -4,6 +4,7 @@ const db = require('../db/index');
 const { v4: uuidv4 } = require('uuid');
 const { getUserByToken } = require("../helpers/auth");
 const { authMiddleware } = require("../middlewares/auth");
+const { sendTwitToQueue } = require("../rmq/rmq");
 
 // todo тут будет формироваться лента (не тут, тут будут все. Нужен будет запрос на ленту юзера)
 router.get('/', authMiddleware, function (req, res, next) {
@@ -37,15 +38,21 @@ router.get('/', authMiddleware, function (req, res, next) {
 router.post('/', authMiddleware, function (req, res, next) {
     getUserByToken(req.headers.authorization || '').then((user) => {
         if (user) {
-            db('twits').insert({
+            const twit = {
                 post: req.body.text,
                 author_id: user.id,
                 created_date: new Date(),
-            }).returning('id').then(([result]) => {
+            };
+            db('twits').insert(twit).returning('id').then(([result]) => {
+                sendTwitToQueue({
+                    ...twit,
+                    ...result,
+                });
+
                 res.json({
                     message: 'success',
                     ...result,
-                })
+                });
             })
         }
     })

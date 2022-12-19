@@ -51,6 +51,9 @@ services:
       - dbPort=5432
       - dbHost=db
       - name=server1
+      - rabbitUser=myname
+      - rabbitPass=321
+      - TWITS_QUEUE=twits
     container_name: server1
   server2:
     image: server
@@ -69,6 +72,9 @@ services:
         - dbPort=5432
         - dbHost=db
         - name=server2
+        - rabbitUser=myname
+        - rabbitPass=321
+        - TWITS_QUEUE=twits
     container_name: server2
   front:
     ports:
@@ -83,6 +89,40 @@ services:
       - REACT_APP_WEB_BASE_URL=http://localhost:80
     container_name: front
 
+  rmq:
+    image: rabbitmq:management
+    ports:
+      - "15672:15672"
+    networks:
+      - net
+    hostname: rmq
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:15672" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    environment:
+      - RABBITMQ_DEFAULT_USER=myname
+      - RABBITMQ_DEFAULT_PASS=321
+    container_name: rmq
+
+  loader:
+    build:
+      context: /loader
+      dockerfile: dockerfile
+    restart: on-failure
+    networks:
+      - net
+    depends_on:
+      - rmq
+      - nginx
+      - redis
+    environment:
+      - user=myname
+      - pass=321
+      - WEB_BASE_URL=nginx:80
+      - REDIS_NAME=redis
+    container_name: loader
 networks:
   net:
     driver: bridge
