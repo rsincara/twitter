@@ -25,7 +25,7 @@ const Header = () => {
                 </SC.Logo>
 
                 <NavBar>
-                    <SC.NavItem to='/twits'>Twits</SC.NavItem>
+                    <SC.NavItem to='/twits'>Recommendations</SC.NavItem>
                     <SC.NavItem to='/my-twits'>My Twits</SC.NavItem>
                     <SC.NavItem to='/create-twit'>Create</SC.NavItem>
                 </NavBar>

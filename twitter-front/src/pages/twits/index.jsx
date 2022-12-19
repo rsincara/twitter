@@ -34,7 +34,7 @@ const MyTwits = () => {
     return (
         <MainLayout>
             <SC.Title>
-                Twits:
+                Recommendations:
             </SC.Title>
 
             {!twits && (

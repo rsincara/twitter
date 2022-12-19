@@ -9,7 +9,7 @@ const { authMiddleware } = require("../middlewares/auth");
 router.get('/', authMiddleware, function (req, res, next) {
     getUserByToken(req.headers.authorization || '').then((user) => {
         if (user) {
-            db('twits').then((twits) => {
+            db('twits').whereNot('author_id', user.id).then((twits) => {
                 const userIds = new Set(twits.map((x) => x.author_id));
                 db('users').whereIn('id', [...userIds]).then((users) => {
                     db('users_subs').where({
