@@ -9,6 +9,8 @@ export const Header = styled.header`
   color: #fafafa;
 
   padding: 0 32px;
+
+  box-shadow: 4px 4px 8px 0 rgba(34, 60, 80, 0.2);
 `;
 
 export const Content = styled.div`

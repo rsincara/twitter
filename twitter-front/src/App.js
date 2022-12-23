@@ -11,6 +11,7 @@ import { selectUserBranch } from "./redux/user/selectors";
 import {getUserInfo} from "./redux/user";
 import Twits from "./pages/twits";
 import Loader from './UI/Loader/Loader';
+import Feed from "./pages/feed";
 
 function App() {
     const dispatch = useDispatch();
@@ -35,6 +36,7 @@ function App() {
                 <Route path="/create-twit" element={<CreateTwit/>}/>
                 <Route path="/my-twits" element={<MyTwits/>}/>
                 <Route path="/twits" element={<Twits/>}/>
+                <Route path="/feed" element={<Feed/>}/>
                 <Route path="/" element={<Index/>}/>
             </Routes>
         </>

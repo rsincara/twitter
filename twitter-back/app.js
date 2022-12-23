@@ -5,6 +5,7 @@ var logger = require('morgan');
 var usersRouter = require('./routes/users');
 var twitsRouter = require('./routes/twits');
 var cors = require('cors')
+const {connectClient} = require("./redis/redis");
 
 var app = express();
 
@@ -35,5 +36,7 @@ app.use(function (req, res, next) {
 
 app.use('/users', usersRouter);
 app.use('/twits', twitsRouter);
+
+connectClient();
 
 module.exports = app;

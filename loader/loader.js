@@ -13,18 +13,6 @@ const getStatusFromRedis = async (client, link) => {
     return await client.get(link);
 }
 
-// const updateLink = (id, status) => {
-//     fetch(`http://localhost:3000/links/${id}`, {
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         method: 'PUT',
-//         body: JSON.stringify({
-//             status,
-//         })
-//     });
-// }
-
 const client = createClient({
     url: `redis://${REDIS_NAME}:6379`
 });
@@ -51,17 +39,20 @@ amqp.connect(`amqp://${user}:${pass}@rmq:5672/%2F`, function (error0, connection
         channel.consume(queue, async function (msg) {
             const content = JSON.parse(msg.content.toString());
             console.log('content: ', content);
-            // const statusFromRedis = await getStatusFromRedis(client, content.name);
 
-            // if (statusFromRedis) {
-            //     // updateLink(content.id, statusFromRedis);
-            // } else {
-            //     // fetch(content.name)
-            //     //     .then((res) => {
-            //     //         updateLink(content.id, res.status);
-            //     //         client.set(content.name, res.status);
-            //     //     });
-            // }
+            fetch(`http://nginx/twits/get-subscribers?authorId=${content.author_id}`)
+                .then((res) => res.json())
+                .then((res) => {
+                    const userIds = res.result;
+                    console.log('userIds: ', userIds);
+                    userIds.forEach((userId) => {
+                        client.lPush(userId.toString(), JSON.stringify(content))
+                    });
+
+                })
+                .catch((fetchError) => {
+                    console.log('fetchError: ', fetchError);
+                });
             console.log(" [x] Received %s", msg.content.toString());
         }, {
             noAck: true

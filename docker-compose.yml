@@ -30,6 +30,7 @@ services:
       - server2
     networks:
       - net
+    container_name: nginx
   redis:
     image: redis
     networks:
@@ -54,6 +55,7 @@ services:
       - rabbitUser=myname
       - rabbitPass=321
       - TWITS_QUEUE=twits
+      - REDIS_NAME=redis
     container_name: server1
   server2:
     image: server
@@ -75,6 +77,7 @@ services:
         - rabbitUser=myname
         - rabbitPass=321
         - TWITS_QUEUE=twits
+        - REDIS_NAME=redis
     container_name: server2
   front:
     ports:
