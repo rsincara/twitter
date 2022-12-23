@@ -4,6 +4,7 @@ const db = require('../db/index');
 const { v4: uuidv4 } = require('uuid');
 const { isValidPassword, getUserByToken} = require("../helpers/auth");
 const {authMiddleware} = require("../middlewares/auth");
+const {deleteUserPostsFromFeed} = require("../redis/redis");
 
 router.get('/', authMiddleware, function(req, res, next) {
   db('users').then((users) => {
@@ -143,11 +144,15 @@ router.post('/unsubscribe', authMiddleware, function (req, res, next) {
             'user_sub_id': user.id,
             'user_author_id': id,
           }).del().then(() => {
-            res.json({
-              message: "Unsubscribed",
-              status: 200,
+            deleteUserPostsFromFeed(user.id, id).then(() => {
+              res.json({
+                message: "Unsubscribed",
+                status: 200,
+              })
             })
-          })
+          });
+
+
         } else {
           res.status(422).json({
             message: "You are not subscribed on this user",

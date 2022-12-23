@@ -20,7 +20,20 @@ const getFeedByUserId = async (userId) => {
     return result;
 };
 
+const deleteUserPostsFromFeed = async (userId, authorId) => {
+    const posts = await client.sendCommand(['lrange', userId.toString(), '0', '-1']);
+    const parsedPosts = posts.map((post) => JSON.parse(post));
+    const filteredPosts = parsedPosts.filter((post) => post.author_id !== authorId);
+
+    await client.sendCommand(['del', userId.toString()]);
+
+    filteredPosts.forEach((post) => {
+        client.lPush(userId.toString(), JSON.stringify(post));
+    });
+};
+
 module.exports = {
     getFeedByUserId,
     connectClient,
+    deleteUserPostsFromFeed,
 };
